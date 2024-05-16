@@ -3,7 +3,7 @@ package metrics
 import (
 	"errors"
 
-	"github.com/murasame29/discord_metrics/receiver/internal/metadata"
+	"github.com/murasame29/discord_metrics/internal/metadata"
 	"go.opentelemetry.io/collector/component"
 )
 
