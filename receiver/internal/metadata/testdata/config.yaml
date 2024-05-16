@@ -1,0 +1,17 @@
+default:
+all_set:
+  metrics:
+    discord.join.count:
+      enabled: true
+    discord.leave.count:
+      enabled: true
+    discord.messages.count:
+      enabled: true
+none_set:
+  metrics:
+    discord.join.count:
+      enabled: false
+    discord.leave.count:
+      enabled: false
+    discord.messages.count:
+      enabled: false

@@ -1,0 +1,47 @@
+type: discord
+
+status:
+  class: receiver
+  stability:
+    development:
+      - metrics
+  codeowners:
+    active: 
+      - murasame29
+
+attributes:
+  discord.guild.id:
+    description: "The ID of the guild"
+    type: string
+
+metrics:
+  discord.messages.count:
+    description: "The number of messages sent to the guild"
+    unit: "{messages}"
+    sum:
+      monotonic: true
+      aggregation_temporality: cumulative
+      value_type: int
+    enabled: true
+    attributes:
+      - discord.guild.id
+  discord.join.count:
+    description: "The number of join guild"
+    unit: "{join}"
+    sum:
+      monotonic: true
+      aggregation_temporality: cumulative
+      value_type: int
+    enabled: true
+    attributes:
+      - discord.guild.id
+  discord.leave.count:
+    description: "The number of laeve guild"
+    unit: "{leave}"
+    sum:
+      monotonic: true
+      aggregation_temporality: cumulative
+      value_type: int
+    enabled: true
+    attributes:
+      - discord.guild.id
