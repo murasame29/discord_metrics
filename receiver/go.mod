@@ -1,4 +1,4 @@
-module github.com/murasame29/discord_metrics
+module github.com/murasame29/discord_metrics/receiver
 
 go 1.22.2
 
