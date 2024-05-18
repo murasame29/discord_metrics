@@ -13,12 +13,9 @@ exporters:
   otlp:
     endpoint: "api.honeycomb.io:443" 
     headers:
-      x-honeycomb-team: $HONEYCOMB_TOKEN
-
-  prometheus:
-    endpoint: "0.0.0.0:8889"
-    const_labels: 
-      label1: value1
+      x-honeycomb-team: $HONEYCOMB_TOKEN 
+  debug:
+    verbosity: debug      
 
 service:
   pipelines:
@@ -29,4 +26,3 @@ service:
       exporters:
         - otlp
         - debug
-        - prometheus
