@@ -10,7 +10,9 @@ RUN go build -o /bin/app .
 
 FROM gcr.io/distroless/base-debian12:nonroot
 WORKDIR /app
+COPY otel-config.yaml otel-config.yaml
 COPY --from=builder /bin/app /app/app
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 
-ENTRYPOINT ["/app/app"]
+
+CMD ["/app/app","--config","otel-config.yaml"]
