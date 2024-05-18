@@ -14,8 +14,8 @@ exporters:
     endpoint: "api.honeycomb.io:443" 
     headers:
       x-honeycomb-team: $HONEYCOMB_TOKEN 
+      
   debug:
-    verbosity: debug      
 
 service:
   pipelines:

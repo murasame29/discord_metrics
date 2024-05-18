@@ -7,6 +7,8 @@ import (
 	"go.opentelemetry.io/collector/component"
 )
 
+var collectGuildIDs map[string]struct{}
+
 type Config struct {
 	Token string `mapstructure:"token"`
 	// BufferInterval is the interval period to buffer messages from Discord.
@@ -24,7 +26,7 @@ type Config struct {
 	// Channels is an optional setting to collect statistics from specific channels.
 	// If it is empty, the receiver collects statistics from all channels.
 	// The ServerWide setting is true, receiver ignores this setting.
-	Channels []string `mapstructure:"channels,omitempty"`
+	Guilds []string `mapstructure:"guilds,omitempty"`
 
 	MetricsBuilderConfig metadata.MetricsBuilderConfig
 }
@@ -34,7 +36,7 @@ func NewDefaultConfig() component.Config {
 		Token:                "",
 		BufferInterval:       "30s",
 		ServerWide:           true,
-		Channels:             []string{},
+		Guilds:               []string{},
 		MetricsBuilderConfig: metadata.DefaultMetricsBuilderConfig(),
 	}
 }
@@ -44,6 +46,11 @@ var _ component.Config = (*Config)(nil)
 func (c *Config) Validate() error {
 	if c.Token == "" {
 		return errors.New("token cannot be empty")
+	}
+
+	collectGuildIDs = make(map[string]struct{}, len(c.Guilds))
+	for _, guild := range c.Guilds {
+		collectGuildIDs[guild] = struct{}{}
 	}
 
 	return nil

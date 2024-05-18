@@ -8,32 +8,21 @@ import (
 
 func (dh *discordHandler) messageCreateToMetrics(e messageCreateEvent) {
 	now := pcommon.NewTimestampFromTime(time.Now())
-	channelID := e.m.ChannelID
-	matched := false
-	switch {
-	case dh.config.ServerWide:
-		channelID = "@all@"
-		matched = true
-	case len(dh.config.Channels) == 0:
-		matched = true
-	default:
-		for _, ch := range dh.config.Channels {
-			if ch == channelID {
-				matched = true
-				break
-			}
-		}
-	}
-	if !matched {
+	if _, ok := collectGuildIDs[e.m.GuildID]; !ok {
 		return
 	}
-	dh.mb.RecordDiscordMessagesCountDataPoint(now, 1, channelID)
+
+	dh.mb.RecordDiscordMessagesCountDataPoint(now, 1, e.m.ChannelID)
 }
 
 func (dh *discordHandler) guildJoinToMetrics(e guildMemberAddEvent) {
 	now := pcommon.NewTimestampFromTime(time.Now())
 	// ignore bot
 	if e.g.Member.User.Bot {
+		return
+	}
+
+	if _, ok := collectGuildIDs[e.g.GuildID]; !ok {
 		return
 	}
 
@@ -44,6 +33,10 @@ func (dh *discordHandler) guildLeaveToMetrics(e guildMemberRemoveEvent) {
 	now := pcommon.NewTimestampFromTime(time.Now())
 	// ignore bot
 	if e.g.Member.User.Bot {
+		return
+	}
+
+	if _, ok := collectGuildIDs[e.g.GuildID]; !ok {
 		return
 	}
 
