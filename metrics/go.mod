@@ -5,7 +5,6 @@ go 1.22.2
 require (
 	github.com/bwmarrin/discordgo v0.28.1
 	github.com/google/go-cmp v0.6.0
-	github.com/murasame29/discord_metrics v0.0.0-20240516130653-f03963cb62f4
 	github.com/stretchr/testify v1.9.0
 	go.opentelemetry.io/collector/component v0.100.0
 	go.opentelemetry.io/collector/confmap v0.100.0

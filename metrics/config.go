@@ -30,7 +30,7 @@ type Config struct {
 }
 
 func NewDefaultConfig() component.Config {
-	return Config{
+	return &Config{
 		Token:                "",
 		BufferInterval:       "30s",
 		ServerWide:           true,
@@ -41,7 +41,7 @@ func NewDefaultConfig() component.Config {
 
 var _ component.Config = (*Config)(nil)
 
-func (c Config) Validate() error {
+func (c *Config) Validate() error {
 	if c.Token == "" {
 		return errors.New("token cannot be empty")
 	}

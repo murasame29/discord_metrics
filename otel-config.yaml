@@ -1,0 +1,32 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+  discord:
+    token: $DISCORD_TOKEN
+  
+processors:
+  batch:
+
+exporters:
+  otlp:
+    endpoint: "api.honeycomb.io:443" 
+    headers:
+      x-honeycomb-team: $HONEYCOMB_TOKEN
+
+  prometheus:
+    endpoint: "0.0.0.0:8889"
+    const_labels: 
+      label1: value1
+
+service:
+  pipelines:
+    metrics:
+      receivers:
+        - otlp
+        - discord
+      exporters:
+        - otlp
+        - debug
+        - prometheus

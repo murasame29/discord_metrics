@@ -3,3 +3,4 @@ mdatagen:
 
 mbuild:
 	go run go.opentelemetry.io/collector/cmd/builder@latest --config=otelcol-builder.yaml
+	go build -o .bin/metrics .

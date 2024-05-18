@@ -61,6 +61,10 @@ TICK:
 		select {
 		case e := <-dh.mcCh:
 			dh.messageCreateToMetrics(e)
+		case e := <-dh.gaCh:
+			dh.guildJoinToMetrics(e)
+		case e := <-dh.grCh:
+			dh.guildLeaveToMetrics(e)
 		case <-ticker.C:
 			metrics := dh.mb.Emit()
 			dh.obsrecv.StartMetricsOp(ctx)

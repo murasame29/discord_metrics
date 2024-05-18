@@ -1,23 +1,19 @@
 services:
-  otel-collector:
-      build:
-        context: .docker/otel
-        dockerfile: Dockerfile
-      restart: always
-      environment:
-        OTELCOL_ARGS: ""
-      volumes:
-        - ./otel-config.yaml:/etc/otel-collector-config.yaml
-      ports:
-        - "8889:8889"   # Prometheus exporter metrics
-        - "4317:4317"   # OTLP gRPC receiver
-  
   prometheus:
-    build:
-      context: .docker/prometheus
-      dockerfile: Dockerfile
+    image: prom/prometheus:latest
     restart: always
     volumes:
-      - ./prometheus.yaml:/etc/prometheus/prometheus.yml
+      - ./.docker/prometheus/prometheus.yaml:/etc/prometheus/prometheus.yml
     ports:
       - "9090:9090"
+    
+  metrics:
+    build: 
+      context: .
+      dockerfile: .docker/discord_metrics/Dockerfile
+    volumes:
+      - ./otel-config.yaml:/build/otel-config.yaml
+    command:
+      - /build/main
+      - --config
+      - otel-config.yaml
