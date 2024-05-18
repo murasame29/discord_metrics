@@ -6,7 +6,7 @@ COPY metrics/ metrics/
 COPY otelcol-builder.yaml otelcol-builder.yaml
 
 RUN go run go.opentelemetry.io/collector/cmd/builder@latest --config=otelcol-builder.yaml
-RUN go build -o /bin/app main.go
+RUN go build -o /bin/app .
 
 FROM gcr.io/distroless/base-debian12:nonroot
 WORKDIR /app
