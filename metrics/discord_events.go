@@ -10,6 +10,8 @@ func (dh *discordHandler) initEvents(ctx context.Context) {
 	dh.session.AddHandler(dh.messageCreateFunc(ctx))
 	dh.session.AddHandler(dh.joinFunc(ctx))
 	dh.session.AddHandler(dh.leaveFunc(ctx))
+	dh.session.AddHandler(dh.createChannelFunc(ctx))
+	dh.session.AddHandler(dh.deletechannelFunc(ctx))
 }
 
 type eventChannels struct {
@@ -66,5 +68,27 @@ func (dh *discordHandler) leaveFunc(_ context.Context) func(s *discordgo.Session
 			g: g,
 		}
 
+	}
+}
+
+type channelCreateEvent struct {
+	s *discordgo.Session
+	c *discordgo.ChannelCreate
+}
+
+func (dh *discordHandler) createChannelFunc(_ context.Context) func(s *discordgo.Session, c *discordgo.ChannelCreate) {
+	return func(s *discordgo.Session, c *discordgo.ChannelCreate) {
+		ChannelMaps[c.ID] = c.Channel
+	}
+}
+
+type channelDeleteEvent struct {
+	s *discordgo.Session
+	c *discordgo.ChannelDelete
+}
+
+func (dh *discordHandler) deletechannelFunc(_ context.Context) func(s *discordgo.Session, c *discordgo.ChannelDelete) {
+	return func(s *discordgo.Session, c *discordgo.ChannelDelete) {
+		delete(ChannelMaps, c.ID)
 	}
 }

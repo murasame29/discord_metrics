@@ -24,7 +24,7 @@ The number of join guild
 
 | Name | Description | Values |
 | ---- | ----------- | ------ |
-| discord.guild.id | The ID of the guild | Any Str |
+| discord.guild.id | サーバのID | Any Str |
 
 ### discord.leave.count
 
@@ -38,7 +38,7 @@ The number of laeve guild
 
 | Name | Description | Values |
 | ---- | ----------- | ------ |
-| discord.guild.id | The ID of the guild | Any Str |
+| discord.guild.id | サーバのID | Any Str |
 
 ### discord.messages.count
 
@@ -52,4 +52,9 @@ The number of messages sent to the guild
 
 | Name | Description | Values |
 | ---- | ----------- | ------ |
-| discord.guild.id | The ID of the guild | Any Str |
+| discord.category.id | チャンネルカテゴリのID | Any Str |
+| discord.category.name | チャンネルカテゴリの名前 | Any Str |
+| discord.channel.id | チャンネルのID | Any Str |
+| discord.channel.name | チャンネルの名前 | Any Str |
+| discord.messageby.id | 発言者のID | Any Str |
+| discord.messageby.name | 発言者の名前 | Any Str |

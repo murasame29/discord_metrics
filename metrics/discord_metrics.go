@@ -1,6 +1,7 @@
 package metrics
 
 import (
+	"log"
 	"time"
 
 	"go.opentelemetry.io/collector/pdata/pcommon"
@@ -8,11 +9,23 @@ import (
 
 func (dh *discordHandler) messageCreateToMetrics(e messageCreateEvent) {
 	now := pcommon.NewTimestampFromTime(time.Now())
-	if _, ok := collectGuildIDs[e.m.GuildID]; !ok {
+	if e.m.GuildID != dh.config.GuildID {
+		log.Panicln("[INFO] ingore", e.m.Content)
 		return
 	}
 
-	dh.mb.RecordDiscordMessagesCountDataPoint(now, 1, e.m.ChannelID)
+	channel := ChannelMaps[e.m.ChannelID]
+	parent := ChannelMaps[channel.ParentID]
+	dh.mb.RecordDiscordMessagesCountDataPoint(
+		now,
+		1,
+		parent.ID,
+		parent.Name,
+		channel.ID,
+		channel.Name,
+		e.m.Author.ID,
+		e.m.Author.GlobalName,
+	)
 }
 
 func (dh *discordHandler) guildJoinToMetrics(e guildMemberAddEvent) {
@@ -22,11 +35,11 @@ func (dh *discordHandler) guildJoinToMetrics(e guildMemberAddEvent) {
 		return
 	}
 
-	if _, ok := collectGuildIDs[e.g.GuildID]; !ok {
+	if e.g.GuildID != dh.config.GuildID {
 		return
 	}
 
-	dh.mb.RecordDiscordJoinCountDataPoint(now, 1, e.g.Member.User.ID)
+	dh.mb.RecordDiscordJoinCountDataPoint(now, 1, e.g.Member.User.GlobalName)
 }
 
 func (dh *discordHandler) guildLeaveToMetrics(e guildMemberRemoveEvent) {
@@ -36,9 +49,9 @@ func (dh *discordHandler) guildLeaveToMetrics(e guildMemberRemoveEvent) {
 		return
 	}
 
-	if _, ok := collectGuildIDs[e.g.GuildID]; !ok {
+	if e.g.GuildID != dh.config.GuildID {
 		return
 	}
 
-	dh.mb.RecordDiscordLeaveCountDataPoint(now, 1, e.g.Member.User.ID)
+	dh.mb.RecordDiscordLeaveCountDataPoint(now, 1, e.g.Member.User.GlobalName)
 }

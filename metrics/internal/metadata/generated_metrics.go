@@ -134,7 +134,7 @@ func (m *metricDiscordMessagesCount) init() {
 	m.data.Sum().DataPoints().EnsureCapacity(m.capacity)
 }
 
-func (m *metricDiscordMessagesCount) recordDataPoint(start pcommon.Timestamp, ts pcommon.Timestamp, val int64, discordGuildIDAttributeValue string) {
+func (m *metricDiscordMessagesCount) recordDataPoint(start pcommon.Timestamp, ts pcommon.Timestamp, val int64, discordCategoryIDAttributeValue string, discordCategoryNameAttributeValue string, discordChannelIDAttributeValue string, discordChannelNameAttributeValue string, discordMessagebyIDAttributeValue string, discordMessagebyNameAttributeValue string) {
 	if !m.config.Enabled {
 		return
 	}
@@ -142,7 +142,12 @@ func (m *metricDiscordMessagesCount) recordDataPoint(start pcommon.Timestamp, ts
 	dp.SetStartTimestamp(start)
 	dp.SetTimestamp(ts)
 	dp.SetIntValue(val)
-	dp.Attributes().PutStr("discord.guild.id", discordGuildIDAttributeValue)
+	dp.Attributes().PutStr("discord.category.id", discordCategoryIDAttributeValue)
+	dp.Attributes().PutStr("discord.category.name", discordCategoryNameAttributeValue)
+	dp.Attributes().PutStr("discord.channel.id", discordChannelIDAttributeValue)
+	dp.Attributes().PutStr("discord.channel.name", discordChannelNameAttributeValue)
+	dp.Attributes().PutStr("discord.messageby.id", discordMessagebyIDAttributeValue)
+	dp.Attributes().PutStr("discord.messageby.name", discordMessagebyNameAttributeValue)
 }
 
 // updateCapacity saves max length of data point slices that will be used for the slice capacity.
@@ -292,8 +297,8 @@ func (mb *MetricsBuilder) RecordDiscordLeaveCountDataPoint(ts pcommon.Timestamp,
 }
 
 // RecordDiscordMessagesCountDataPoint adds a data point to discord.messages.count metric.
-func (mb *MetricsBuilder) RecordDiscordMessagesCountDataPoint(ts pcommon.Timestamp, val int64, discordGuildIDAttributeValue string) {
-	mb.metricDiscordMessagesCount.recordDataPoint(mb.startTime, ts, val, discordGuildIDAttributeValue)
+func (mb *MetricsBuilder) RecordDiscordMessagesCountDataPoint(ts pcommon.Timestamp, val int64, discordCategoryIDAttributeValue string, discordCategoryNameAttributeValue string, discordChannelIDAttributeValue string, discordChannelNameAttributeValue string, discordMessagebyIDAttributeValue string, discordMessagebyNameAttributeValue string) {
+	mb.metricDiscordMessagesCount.recordDataPoint(mb.startTime, ts, val, discordCategoryIDAttributeValue, discordCategoryNameAttributeValue, discordChannelIDAttributeValue, discordChannelNameAttributeValue, discordMessagebyIDAttributeValue, discordMessagebyNameAttributeValue)
 }
 
 // Reset resets metrics builder to its initial state. It should be used when external metrics source is restarted,

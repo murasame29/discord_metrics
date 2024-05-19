@@ -26,7 +26,7 @@ type Config struct {
 	// Channels is an optional setting to collect statistics from specific channels.
 	// If it is empty, the receiver collects statistics from all channels.
 	// The ServerWide setting is true, receiver ignores this setting.
-	Guilds []string `mapstructure:"guilds,omitempty"`
+	GuildID string `mapstructure:"guildID,omitempty"`
 
 	MetricsBuilderConfig metadata.MetricsBuilderConfig
 }
@@ -36,7 +36,7 @@ func NewDefaultConfig() component.Config {
 		Token:                "",
 		BufferInterval:       "30s",
 		ServerWide:           true,
-		Guilds:               []string{},
+		GuildID:              "",
 		MetricsBuilderConfig: metadata.DefaultMetricsBuilderConfig(),
 	}
 }
@@ -48,9 +48,8 @@ func (c *Config) Validate() error {
 		return errors.New("token cannot be empty")
 	}
 
-	collectGuildIDs = make(map[string]struct{}, len(c.Guilds))
-	for _, guild := range c.Guilds {
-		collectGuildIDs[guild] = struct{}{}
+	if c.GuildID == "" {
+		return errors.New("guildID cannot be empty")
 	}
 
 	return nil

@@ -5,16 +5,17 @@ receivers:
         endpoint: 0.0.0.0:4317
   discord:
     token: $DISCORD_TOKEN
-  
+    guildID: $DISCORD_GUILDS
+
 processors:
   batch:
 
 exporters:
-  otlp:
-    endpoint: "api.honeycomb.io:443" 
+  otlphttp:
+    endpoint: https://otlp.nr-data.net
     headers:
-      x-honeycomb-team: $HONEYCOMB_TOKEN 
-      
+      api-key: $NEW_RELIC_LICENSE_KEY
+
   debug:
 
 service:
@@ -24,5 +25,5 @@ service:
         - otlp
         - discord
       exporters:
-        - otlp
+        - otlphttp
         - debug

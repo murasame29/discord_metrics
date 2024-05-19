@@ -1,19 +1,9 @@
 services:
-  prometheus:
-    image: prom/prometheus:latest
-    restart: always
-    volumes:
-      - ./.docker/prometheus/prometheus.yaml:/etc/prometheus/prometheus.yml
-    ports:
-      - "9090:9090"
-    
   metrics:
     build: 
       context: .
       dockerfile: .docker/discord_metrics/Dockerfile
-    volumes:
-      - ./otel-config.yaml:/build/otel-config.yaml
-    command:
-      - /build/main
-      - --config
-      - otel-config.yaml
+    environment:
+      - DISCORD_GUILDS=${DISCORD_GUILDS}
+      - DISCORD_TOKEN=${DISCORD_TOKEN}
+      - NEW_RELIC_LICENSE_KEY=${NEW_RELIC_LICENSE_KEY}

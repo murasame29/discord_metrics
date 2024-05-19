@@ -11,8 +11,32 @@ status:
 
 attributes:
   discord.guild.id:
-    description: "The ID of the guild"
+    description: "サーバのID"
     type: string
+  
+  discord.category.id:
+    description: "チャンネルカテゴリのID"
+    type: string
+
+  discord.category.name:
+    description: "チャンネルカテゴリの名前"
+    type: string
+
+  discord.channel.id:
+    description: "チャンネルのID"
+    type: string
+
+  discord.channel.name:
+    description: "チャンネルの名前"
+    type: string
+
+  discord.messageby.id:
+    description: "発言者のID"
+    type: string
+
+  discord.messageby.name:
+    description: "発言者の名前"
+    type: string 
 
 metrics:
   discord.messages.count:
@@ -24,7 +48,13 @@ metrics:
       value_type: int
     enabled: true
     attributes:
-      - discord.guild.id
+      - discord.category.id
+      - discord.category.name
+      - discord.channel.id
+      - discord.channel.name
+      - discord.messageby.id
+      - discord.messageby.name
+    
   discord.join.count:
     description: "The number of join guild"
     unit: "{join}"
@@ -35,6 +65,7 @@ metrics:
     enabled: true
     attributes:
       - discord.guild.id
+    
   discord.leave.count:
     description: "The number of laeve guild"
     unit: "{leave}"

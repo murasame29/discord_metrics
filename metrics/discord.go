@@ -2,6 +2,7 @@ package metrics
 
 import (
 	"context"
+	"log"
 	"time"
 
 	"github.com/bwmarrin/discordgo"
@@ -10,6 +11,26 @@ import (
 	"go.opentelemetry.io/collector/receiver"
 	"go.opentelemetry.io/collector/receiver/receiverhelper"
 )
+
+// ChannelMaps は、channelIDをkey, channel_nameをvalueで保存する
+var (
+	ChannelMaps map[string]*discordgo.Channel
+)
+
+func initChannelKV(ss *discordgo.Session, guildID string) {
+	channels, err := ss.GuildChannels(guildID)
+	if err != nil {
+		panic(err)
+	}
+
+	channelMaps := make(map[string]*discordgo.Channel)
+	for _, channel := range channels {
+		channelMaps[channel.ID] = channel
+	}
+
+	log.Println(channelMaps)
+	ChannelMaps = channelMaps
+}
 
 type discordHandler struct {
 	session  *discordgo.Session
@@ -54,7 +75,7 @@ func (dh *discordHandler) run(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-
+	initChannelKV(dh.session, dh.config.GuildID)
 	ticker := time.NewTicker(d)
 TICK:
 	for {

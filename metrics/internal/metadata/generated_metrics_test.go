@@ -65,7 +65,7 @@ func TestMetricsBuilder(t *testing.T) {
 
 			defaultMetricsCount++
 			allMetricsCount++
-			mb.RecordDiscordMessagesCountDataPoint(ts, 1, "discord.guild.id-val")
+			mb.RecordDiscordMessagesCountDataPoint(ts, 1, "discord.category.id-val", "discord.category.name-val", "discord.channel.id-val", "discord.channel.name-val", "discord.messageby.id-val", "discord.messageby.name-val")
 
 			res := pcommon.NewResource()
 			metrics := mb.Emit(WithResource(res))
@@ -137,9 +137,24 @@ func TestMetricsBuilder(t *testing.T) {
 					assert.Equal(t, ts, dp.Timestamp())
 					assert.Equal(t, pmetric.NumberDataPointValueTypeInt, dp.ValueType())
 					assert.Equal(t, int64(1), dp.IntValue())
-					attrVal, ok := dp.Attributes().Get("discord.guild.id")
+					attrVal, ok := dp.Attributes().Get("discord.category.id")
 					assert.True(t, ok)
-					assert.EqualValues(t, "discord.guild.id-val", attrVal.Str())
+					assert.EqualValues(t, "discord.category.id-val", attrVal.Str())
+					attrVal, ok = dp.Attributes().Get("discord.category.name")
+					assert.True(t, ok)
+					assert.EqualValues(t, "discord.category.name-val", attrVal.Str())
+					attrVal, ok = dp.Attributes().Get("discord.channel.id")
+					assert.True(t, ok)
+					assert.EqualValues(t, "discord.channel.id-val", attrVal.Str())
+					attrVal, ok = dp.Attributes().Get("discord.channel.name")
+					assert.True(t, ok)
+					assert.EqualValues(t, "discord.channel.name-val", attrVal.Str())
+					attrVal, ok = dp.Attributes().Get("discord.messageby.id")
+					assert.True(t, ok)
+					assert.EqualValues(t, "discord.messageby.id-val", attrVal.Str())
+					attrVal, ok = dp.Attributes().Get("discord.messageby.name")
+					assert.True(t, ok)
+					assert.EqualValues(t, "discord.messageby.name-val", attrVal.Str())
 				}
 			}
 		})
