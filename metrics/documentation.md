@@ -12,9 +12,9 @@ metrics:
     enabled: false
 ```
 
-### discord.join.count
+### discord-metrics.join.count
 
-The number of join guild
+サーバに入ったユーザの数
 
 | Unit | Metric Type | Value Type | Aggregation Temporality | Monotonic |
 | ---- | ----------- | ---------- | ----------------------- | --------- |
@@ -24,11 +24,13 @@ The number of join guild
 
 | Name | Description | Values |
 | ---- | ----------- | ------ |
-| discord.guild.id | サーバのID | Any Str |
+| discord-metrics.environment | メトリクスの環境。test, dev, prodで分けれられる | Any Str |
+| discord-metrics.actor.id | イベントを発生させた人のID | Any Str |
+| discord-metrics.actor.name | ベントを発生させた人の名前 | Any Str |
 
-### discord.leave.count
+### discord-metrics.leave.count
 
-The number of laeve guild
+サーバから出たユーザの数
 
 | Unit | Metric Type | Value Type | Aggregation Temporality | Monotonic |
 | ---- | ----------- | ---------- | ----------------------- | --------- |
@@ -38,11 +40,13 @@ The number of laeve guild
 
 | Name | Description | Values |
 | ---- | ----------- | ------ |
-| discord.guild.id | サーバのID | Any Str |
+| discord-metrics.environment | メトリクスの環境。test, dev, prodで分けれられる | Any Str |
+| discord-metrics.actor.id | イベントを発生させた人のID | Any Str |
+| discord-metrics.actor.name | ベントを発生させた人の名前 | Any Str |
 
-### discord.messages.count
+### discord-metrics.messages.count
 
-The number of messages sent to the guild
+サーバ内で入力されたメッセージの総数
 
 | Unit | Metric Type | Value Type | Aggregation Temporality | Monotonic |
 | ---- | ----------- | ---------- | ----------------------- | --------- |
@@ -52,9 +56,70 @@ The number of messages sent to the guild
 
 | Name | Description | Values |
 | ---- | ----------- | ------ |
-| discord.category.id | チャンネルカテゴリのID | Any Str |
-| discord.category.name | チャンネルカテゴリの名前 | Any Str |
-| discord.channel.id | チャンネルのID | Any Str |
-| discord.channel.name | チャンネルの名前 | Any Str |
-| discord.messageby.id | 発言者のID | Any Str |
-| discord.messageby.name | 発言者の名前 | Any Str |
+| discord-metrics.environment | メトリクスの環境。test, dev, prodで分けれられる | Any Str |
+| discord-metrics.category.id | チャンネルカテゴリのID | Any Str |
+| discord-metrics.category.name | チャンネルカテゴリの名前 | Any Str |
+| discord-metrics.channel.id | チャンネルのID | Any Str |
+| discord-metrics.channel.name | チャンネルの名前 | Any Str |
+| discord-metrics.actor.id | イベントを発生させた人のID | Any Str |
+| discord-metrics.actor.name | ベントを発生させた人の名前 | Any Str |
+
+### discord-metrics.vc-event.count
+
+vcで行われたイベント
+
+| Unit | Metric Type | Value Type | Aggregation Temporality | Monotonic |
+| ---- | ----------- | ---------- | ----------------------- | --------- |
+| {vc-event} | Sum | Int | Cumulative | true |
+
+#### Attributes
+
+| Name | Description | Values |
+| ---- | ----------- | ------ |
+| discord-metrics.environment | メトリクスの環境。test, dev, prodで分けれられる | Any Str |
+| discord-metrics.category.id | チャンネルカテゴリのID | Any Str |
+| discord-metrics.category.name | チャンネルカテゴリの名前 | Any Str |
+| discord-metrics.channel.id | チャンネルのID | Any Str |
+| discord-metrics.channel.name | チャンネルの名前 | Any Str |
+| discord-metrics.actor.id | イベントを発生させた人のID | Any Str |
+| discord-metrics.actor.name | ベントを発生させた人の名前 | Any Str |
+| discord-metrics.vc.event | voice channelに関わるaction 
+ '' '' ''  | Any Str |
+
+### discord_metrics.vc_active_members
+
+ VCのアクティブメンバー数
+
+| Unit | Metric Type | Value Type |
+| ---- | ----------- | ---------- |
+| {members} | Gauge | Int |
+
+#### Attributes
+
+| Name | Description | Values |
+| ---- | ----------- | ------ |
+| discord-metrics.environment | メトリクスの環境。test, dev, prodで分けれられる | Any Str |
+| discord-metrics.category.id | チャンネルカテゴリのID | Any Str |
+| discord-metrics.category.name | チャンネルカテゴリの名前 | Any Str |
+| discord-metrics.channel.id | チャンネルのID | Any Str |
+| discord-metrics.channel.name | チャンネルの名前 | Any Str |
+
+### discord_metrics.vc_duration
+
+ユーザーごとのVC滞在時間
+
+| Unit | Metric Type | Value Type | Aggregation Temporality | Monotonic |
+| ---- | ----------- | ---------- | ----------------------- | --------- |
+| {seconds} | Sum | Int | Cumulative | true |
+
+#### Attributes
+
+| Name | Description | Values |
+| ---- | ----------- | ------ |
+| discord-metrics.environment | メトリクスの環境。test, dev, prodで分けれられる | Any Str |
+| discord-metrics.category.id | チャンネルカテゴリのID | Any Str |
+| discord-metrics.category.name | チャンネルカテゴリの名前 | Any Str |
+| discord-metrics.channel.id | チャンネルのID | Any Str |
+| discord-metrics.channel.name | チャンネルの名前 | Any Str |
+| discord-metrics.actor.id | イベントを発生させた人のID | Any Str |
+| discord-metrics.actor.name | ベントを発生させた人の名前 | Any Str |

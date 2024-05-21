@@ -11,16 +11,16 @@ import (
 	"go.opentelemetry.io/collector/receiver"
 )
 
-type metricDiscordJoinCount struct {
+type metricDiscordMetricsJoinCount struct {
 	data     pmetric.Metric // data buffer for generated metric.
 	config   MetricConfig   // metric config provided by user.
 	capacity int            // max observed number of data points added to the metric.
 }
 
-// init fills discord.join.count metric with initial data.
-func (m *metricDiscordJoinCount) init() {
-	m.data.SetName("discord.join.count")
-	m.data.SetDescription("The number of join guild")
+// init fills discord-metrics.join.count metric with initial data.
+func (m *metricDiscordMetricsJoinCount) init() {
+	m.data.SetName("discord-metrics.join.count")
+	m.data.SetDescription("サーバに入ったユーザの数")
 	m.data.SetUnit("{join}")
 	m.data.SetEmptySum()
 	m.data.Sum().SetIsMonotonic(true)
@@ -28,7 +28,7 @@ func (m *metricDiscordJoinCount) init() {
 	m.data.Sum().DataPoints().EnsureCapacity(m.capacity)
 }
 
-func (m *metricDiscordJoinCount) recordDataPoint(start pcommon.Timestamp, ts pcommon.Timestamp, val int64, discordGuildIDAttributeValue string) {
+func (m *metricDiscordMetricsJoinCount) recordDataPoint(start pcommon.Timestamp, ts pcommon.Timestamp, val int64, discordMetricsEnvironmentAttributeValue string, discordMetricsActorIDAttributeValue string, discordMetricsActorNameAttributeValue string) {
 	if !m.config.Enabled {
 		return
 	}
@@ -36,18 +36,20 @@ func (m *metricDiscordJoinCount) recordDataPoint(start pcommon.Timestamp, ts pco
 	dp.SetStartTimestamp(start)
 	dp.SetTimestamp(ts)
 	dp.SetIntValue(val)
-	dp.Attributes().PutStr("discord.guild.id", discordGuildIDAttributeValue)
+	dp.Attributes().PutStr("discord-metrics.environment", discordMetricsEnvironmentAttributeValue)
+	dp.Attributes().PutStr("discord-metrics.actor.id", discordMetricsActorIDAttributeValue)
+	dp.Attributes().PutStr("discord-metrics.actor.name", discordMetricsActorNameAttributeValue)
 }
 
 // updateCapacity saves max length of data point slices that will be used for the slice capacity.
-func (m *metricDiscordJoinCount) updateCapacity() {
+func (m *metricDiscordMetricsJoinCount) updateCapacity() {
 	if m.data.Sum().DataPoints().Len() > m.capacity {
 		m.capacity = m.data.Sum().DataPoints().Len()
 	}
 }
 
 // emit appends recorded metric data to a metrics slice and prepares it for recording another set of data points.
-func (m *metricDiscordJoinCount) emit(metrics pmetric.MetricSlice) {
+func (m *metricDiscordMetricsJoinCount) emit(metrics pmetric.MetricSlice) {
 	if m.config.Enabled && m.data.Sum().DataPoints().Len() > 0 {
 		m.updateCapacity()
 		m.data.MoveTo(metrics.AppendEmpty())
@@ -55,8 +57,8 @@ func (m *metricDiscordJoinCount) emit(metrics pmetric.MetricSlice) {
 	}
 }
 
-func newMetricDiscordJoinCount(cfg MetricConfig) metricDiscordJoinCount {
-	m := metricDiscordJoinCount{config: cfg}
+func newMetricDiscordMetricsJoinCount(cfg MetricConfig) metricDiscordMetricsJoinCount {
+	m := metricDiscordMetricsJoinCount{config: cfg}
 	if cfg.Enabled {
 		m.data = pmetric.NewMetric()
 		m.init()
@@ -64,16 +66,16 @@ func newMetricDiscordJoinCount(cfg MetricConfig) metricDiscordJoinCount {
 	return m
 }
 
-type metricDiscordLeaveCount struct {
+type metricDiscordMetricsLeaveCount struct {
 	data     pmetric.Metric // data buffer for generated metric.
 	config   MetricConfig   // metric config provided by user.
 	capacity int            // max observed number of data points added to the metric.
 }
 
-// init fills discord.leave.count metric with initial data.
-func (m *metricDiscordLeaveCount) init() {
-	m.data.SetName("discord.leave.count")
-	m.data.SetDescription("The number of laeve guild")
+// init fills discord-metrics.leave.count metric with initial data.
+func (m *metricDiscordMetricsLeaveCount) init() {
+	m.data.SetName("discord-metrics.leave.count")
+	m.data.SetDescription("サーバから出たユーザの数")
 	m.data.SetUnit("{leave}")
 	m.data.SetEmptySum()
 	m.data.Sum().SetIsMonotonic(true)
@@ -81,7 +83,7 @@ func (m *metricDiscordLeaveCount) init() {
 	m.data.Sum().DataPoints().EnsureCapacity(m.capacity)
 }
 
-func (m *metricDiscordLeaveCount) recordDataPoint(start pcommon.Timestamp, ts pcommon.Timestamp, val int64, discordGuildIDAttributeValue string) {
+func (m *metricDiscordMetricsLeaveCount) recordDataPoint(start pcommon.Timestamp, ts pcommon.Timestamp, val int64, discordMetricsEnvironmentAttributeValue string, discordMetricsActorIDAttributeValue string, discordMetricsActorNameAttributeValue string) {
 	if !m.config.Enabled {
 		return
 	}
@@ -89,18 +91,20 @@ func (m *metricDiscordLeaveCount) recordDataPoint(start pcommon.Timestamp, ts pc
 	dp.SetStartTimestamp(start)
 	dp.SetTimestamp(ts)
 	dp.SetIntValue(val)
-	dp.Attributes().PutStr("discord.guild.id", discordGuildIDAttributeValue)
+	dp.Attributes().PutStr("discord-metrics.environment", discordMetricsEnvironmentAttributeValue)
+	dp.Attributes().PutStr("discord-metrics.actor.id", discordMetricsActorIDAttributeValue)
+	dp.Attributes().PutStr("discord-metrics.actor.name", discordMetricsActorNameAttributeValue)
 }
 
 // updateCapacity saves max length of data point slices that will be used for the slice capacity.
-func (m *metricDiscordLeaveCount) updateCapacity() {
+func (m *metricDiscordMetricsLeaveCount) updateCapacity() {
 	if m.data.Sum().DataPoints().Len() > m.capacity {
 		m.capacity = m.data.Sum().DataPoints().Len()
 	}
 }
 
 // emit appends recorded metric data to a metrics slice and prepares it for recording another set of data points.
-func (m *metricDiscordLeaveCount) emit(metrics pmetric.MetricSlice) {
+func (m *metricDiscordMetricsLeaveCount) emit(metrics pmetric.MetricSlice) {
 	if m.config.Enabled && m.data.Sum().DataPoints().Len() > 0 {
 		m.updateCapacity()
 		m.data.MoveTo(metrics.AppendEmpty())
@@ -108,8 +112,8 @@ func (m *metricDiscordLeaveCount) emit(metrics pmetric.MetricSlice) {
 	}
 }
 
-func newMetricDiscordLeaveCount(cfg MetricConfig) metricDiscordLeaveCount {
-	m := metricDiscordLeaveCount{config: cfg}
+func newMetricDiscordMetricsLeaveCount(cfg MetricConfig) metricDiscordMetricsLeaveCount {
+	m := metricDiscordMetricsLeaveCount{config: cfg}
 	if cfg.Enabled {
 		m.data = pmetric.NewMetric()
 		m.init()
@@ -117,16 +121,16 @@ func newMetricDiscordLeaveCount(cfg MetricConfig) metricDiscordLeaveCount {
 	return m
 }
 
-type metricDiscordMessagesCount struct {
+type metricDiscordMetricsMessagesCount struct {
 	data     pmetric.Metric // data buffer for generated metric.
 	config   MetricConfig   // metric config provided by user.
 	capacity int            // max observed number of data points added to the metric.
 }
 
-// init fills discord.messages.count metric with initial data.
-func (m *metricDiscordMessagesCount) init() {
-	m.data.SetName("discord.messages.count")
-	m.data.SetDescription("The number of messages sent to the guild")
+// init fills discord-metrics.messages.count metric with initial data.
+func (m *metricDiscordMetricsMessagesCount) init() {
+	m.data.SetName("discord-metrics.messages.count")
+	m.data.SetDescription("サーバ内で入力されたメッセージの総数")
 	m.data.SetUnit("{messages}")
 	m.data.SetEmptySum()
 	m.data.Sum().SetIsMonotonic(true)
@@ -134,7 +138,7 @@ func (m *metricDiscordMessagesCount) init() {
 	m.data.Sum().DataPoints().EnsureCapacity(m.capacity)
 }
 
-func (m *metricDiscordMessagesCount) recordDataPoint(start pcommon.Timestamp, ts pcommon.Timestamp, val int64, discordCategoryIDAttributeValue string, discordCategoryNameAttributeValue string, discordChannelIDAttributeValue string, discordChannelNameAttributeValue string, discordMessagebyIDAttributeValue string, discordMessagebyNameAttributeValue string) {
+func (m *metricDiscordMetricsMessagesCount) recordDataPoint(start pcommon.Timestamp, ts pcommon.Timestamp, val int64, discordMetricsEnvironmentAttributeValue string, discordMetricsCategoryIDAttributeValue string, discordMetricsCategoryNameAttributeValue string, discordMetricsChannelIDAttributeValue string, discordMetricsChannelNameAttributeValue string, discordMetricsActorIDAttributeValue string, discordMetricsActorNameAttributeValue string) {
 	if !m.config.Enabled {
 		return
 	}
@@ -142,23 +146,24 @@ func (m *metricDiscordMessagesCount) recordDataPoint(start pcommon.Timestamp, ts
 	dp.SetStartTimestamp(start)
 	dp.SetTimestamp(ts)
 	dp.SetIntValue(val)
-	dp.Attributes().PutStr("discord.category.id", discordCategoryIDAttributeValue)
-	dp.Attributes().PutStr("discord.category.name", discordCategoryNameAttributeValue)
-	dp.Attributes().PutStr("discord.channel.id", discordChannelIDAttributeValue)
-	dp.Attributes().PutStr("discord.channel.name", discordChannelNameAttributeValue)
-	dp.Attributes().PutStr("discord.messageby.id", discordMessagebyIDAttributeValue)
-	dp.Attributes().PutStr("discord.messageby.name", discordMessagebyNameAttributeValue)
+	dp.Attributes().PutStr("discord-metrics.environment", discordMetricsEnvironmentAttributeValue)
+	dp.Attributes().PutStr("discord-metrics.category.id", discordMetricsCategoryIDAttributeValue)
+	dp.Attributes().PutStr("discord-metrics.category.name", discordMetricsCategoryNameAttributeValue)
+	dp.Attributes().PutStr("discord-metrics.channel.id", discordMetricsChannelIDAttributeValue)
+	dp.Attributes().PutStr("discord-metrics.channel.name", discordMetricsChannelNameAttributeValue)
+	dp.Attributes().PutStr("discord-metrics.actor.id", discordMetricsActorIDAttributeValue)
+	dp.Attributes().PutStr("discord-metrics.actor.name", discordMetricsActorNameAttributeValue)
 }
 
 // updateCapacity saves max length of data point slices that will be used for the slice capacity.
-func (m *metricDiscordMessagesCount) updateCapacity() {
+func (m *metricDiscordMetricsMessagesCount) updateCapacity() {
 	if m.data.Sum().DataPoints().Len() > m.capacity {
 		m.capacity = m.data.Sum().DataPoints().Len()
 	}
 }
 
 // emit appends recorded metric data to a metrics slice and prepares it for recording another set of data points.
-func (m *metricDiscordMessagesCount) emit(metrics pmetric.MetricSlice) {
+func (m *metricDiscordMetricsMessagesCount) emit(metrics pmetric.MetricSlice) {
 	if m.config.Enabled && m.data.Sum().DataPoints().Len() > 0 {
 		m.updateCapacity()
 		m.data.MoveTo(metrics.AppendEmpty())
@@ -166,8 +171,182 @@ func (m *metricDiscordMessagesCount) emit(metrics pmetric.MetricSlice) {
 	}
 }
 
-func newMetricDiscordMessagesCount(cfg MetricConfig) metricDiscordMessagesCount {
-	m := metricDiscordMessagesCount{config: cfg}
+func newMetricDiscordMetricsMessagesCount(cfg MetricConfig) metricDiscordMetricsMessagesCount {
+	m := metricDiscordMetricsMessagesCount{config: cfg}
+	if cfg.Enabled {
+		m.data = pmetric.NewMetric()
+		m.init()
+	}
+	return m
+}
+
+type metricDiscordMetricsVcEventCount struct {
+	data     pmetric.Metric // data buffer for generated metric.
+	config   MetricConfig   // metric config provided by user.
+	capacity int            // max observed number of data points added to the metric.
+}
+
+// init fills discord-metrics.vc-event.count metric with initial data.
+func (m *metricDiscordMetricsVcEventCount) init() {
+	m.data.SetName("discord-metrics.vc-event.count")
+	m.data.SetDescription("vcで行われたイベント")
+	m.data.SetUnit("{vc-event}")
+	m.data.SetEmptySum()
+	m.data.Sum().SetIsMonotonic(true)
+	m.data.Sum().SetAggregationTemporality(pmetric.AggregationTemporalityCumulative)
+	m.data.Sum().DataPoints().EnsureCapacity(m.capacity)
+}
+
+func (m *metricDiscordMetricsVcEventCount) recordDataPoint(start pcommon.Timestamp, ts pcommon.Timestamp, val int64, discordMetricsEnvironmentAttributeValue string, discordMetricsCategoryIDAttributeValue string, discordMetricsCategoryNameAttributeValue string, discordMetricsChannelIDAttributeValue string, discordMetricsChannelNameAttributeValue string, discordMetricsActorIDAttributeValue string, discordMetricsActorNameAttributeValue string, discordMetricsVcEventAttributeValue string) {
+	if !m.config.Enabled {
+		return
+	}
+	dp := m.data.Sum().DataPoints().AppendEmpty()
+	dp.SetStartTimestamp(start)
+	dp.SetTimestamp(ts)
+	dp.SetIntValue(val)
+	dp.Attributes().PutStr("discord-metrics.environment", discordMetricsEnvironmentAttributeValue)
+	dp.Attributes().PutStr("discord-metrics.category.id", discordMetricsCategoryIDAttributeValue)
+	dp.Attributes().PutStr("discord-metrics.category.name", discordMetricsCategoryNameAttributeValue)
+	dp.Attributes().PutStr("discord-metrics.channel.id", discordMetricsChannelIDAttributeValue)
+	dp.Attributes().PutStr("discord-metrics.channel.name", discordMetricsChannelNameAttributeValue)
+	dp.Attributes().PutStr("discord-metrics.actor.id", discordMetricsActorIDAttributeValue)
+	dp.Attributes().PutStr("discord-metrics.actor.name", discordMetricsActorNameAttributeValue)
+	dp.Attributes().PutStr("discord-metrics.vc.event", discordMetricsVcEventAttributeValue)
+}
+
+// updateCapacity saves max length of data point slices that will be used for the slice capacity.
+func (m *metricDiscordMetricsVcEventCount) updateCapacity() {
+	if m.data.Sum().DataPoints().Len() > m.capacity {
+		m.capacity = m.data.Sum().DataPoints().Len()
+	}
+}
+
+// emit appends recorded metric data to a metrics slice and prepares it for recording another set of data points.
+func (m *metricDiscordMetricsVcEventCount) emit(metrics pmetric.MetricSlice) {
+	if m.config.Enabled && m.data.Sum().DataPoints().Len() > 0 {
+		m.updateCapacity()
+		m.data.MoveTo(metrics.AppendEmpty())
+		m.init()
+	}
+}
+
+func newMetricDiscordMetricsVcEventCount(cfg MetricConfig) metricDiscordMetricsVcEventCount {
+	m := metricDiscordMetricsVcEventCount{config: cfg}
+	if cfg.Enabled {
+		m.data = pmetric.NewMetric()
+		m.init()
+	}
+	return m
+}
+
+type metricDiscordMetricsVcActiveMembers struct {
+	data     pmetric.Metric // data buffer for generated metric.
+	config   MetricConfig   // metric config provided by user.
+	capacity int            // max observed number of data points added to the metric.
+}
+
+// init fills discord_metrics.vc_active_members metric with initial data.
+func (m *metricDiscordMetricsVcActiveMembers) init() {
+	m.data.SetName("discord_metrics.vc_active_members")
+	m.data.SetDescription(" VCのアクティブメンバー数")
+	m.data.SetUnit("{members}")
+	m.data.SetEmptyGauge()
+	m.data.Gauge().DataPoints().EnsureCapacity(m.capacity)
+}
+
+func (m *metricDiscordMetricsVcActiveMembers) recordDataPoint(start pcommon.Timestamp, ts pcommon.Timestamp, val int64, discordMetricsEnvironmentAttributeValue string, discordMetricsCategoryIDAttributeValue string, discordMetricsCategoryNameAttributeValue string, discordMetricsChannelIDAttributeValue string, discordMetricsChannelNameAttributeValue string) {
+	if !m.config.Enabled {
+		return
+	}
+	dp := m.data.Gauge().DataPoints().AppendEmpty()
+	dp.SetStartTimestamp(start)
+	dp.SetTimestamp(ts)
+	dp.SetIntValue(val)
+	dp.Attributes().PutStr("discord-metrics.environment", discordMetricsEnvironmentAttributeValue)
+	dp.Attributes().PutStr("discord-metrics.category.id", discordMetricsCategoryIDAttributeValue)
+	dp.Attributes().PutStr("discord-metrics.category.name", discordMetricsCategoryNameAttributeValue)
+	dp.Attributes().PutStr("discord-metrics.channel.id", discordMetricsChannelIDAttributeValue)
+	dp.Attributes().PutStr("discord-metrics.channel.name", discordMetricsChannelNameAttributeValue)
+}
+
+// updateCapacity saves max length of data point slices that will be used for the slice capacity.
+func (m *metricDiscordMetricsVcActiveMembers) updateCapacity() {
+	if m.data.Gauge().DataPoints().Len() > m.capacity {
+		m.capacity = m.data.Gauge().DataPoints().Len()
+	}
+}
+
+// emit appends recorded metric data to a metrics slice and prepares it for recording another set of data points.
+func (m *metricDiscordMetricsVcActiveMembers) emit(metrics pmetric.MetricSlice) {
+	if m.config.Enabled && m.data.Gauge().DataPoints().Len() > 0 {
+		m.updateCapacity()
+		m.data.MoveTo(metrics.AppendEmpty())
+		m.init()
+	}
+}
+
+func newMetricDiscordMetricsVcActiveMembers(cfg MetricConfig) metricDiscordMetricsVcActiveMembers {
+	m := metricDiscordMetricsVcActiveMembers{config: cfg}
+	if cfg.Enabled {
+		m.data = pmetric.NewMetric()
+		m.init()
+	}
+	return m
+}
+
+type metricDiscordMetricsVcDuration struct {
+	data     pmetric.Metric // data buffer for generated metric.
+	config   MetricConfig   // metric config provided by user.
+	capacity int            // max observed number of data points added to the metric.
+}
+
+// init fills discord_metrics.vc_duration metric with initial data.
+func (m *metricDiscordMetricsVcDuration) init() {
+	m.data.SetName("discord_metrics.vc_duration")
+	m.data.SetDescription("ユーザーごとのVC滞在時間")
+	m.data.SetUnit("{seconds}")
+	m.data.SetEmptySum()
+	m.data.Sum().SetIsMonotonic(true)
+	m.data.Sum().SetAggregationTemporality(pmetric.AggregationTemporalityCumulative)
+	m.data.Sum().DataPoints().EnsureCapacity(m.capacity)
+}
+
+func (m *metricDiscordMetricsVcDuration) recordDataPoint(start pcommon.Timestamp, ts pcommon.Timestamp, val int64, discordMetricsEnvironmentAttributeValue string, discordMetricsCategoryIDAttributeValue string, discordMetricsCategoryNameAttributeValue string, discordMetricsChannelIDAttributeValue string, discordMetricsChannelNameAttributeValue string, discordMetricsActorIDAttributeValue string, discordMetricsActorNameAttributeValue string) {
+	if !m.config.Enabled {
+		return
+	}
+	dp := m.data.Sum().DataPoints().AppendEmpty()
+	dp.SetStartTimestamp(start)
+	dp.SetTimestamp(ts)
+	dp.SetIntValue(val)
+	dp.Attributes().PutStr("discord-metrics.environment", discordMetricsEnvironmentAttributeValue)
+	dp.Attributes().PutStr("discord-metrics.category.id", discordMetricsCategoryIDAttributeValue)
+	dp.Attributes().PutStr("discord-metrics.category.name", discordMetricsCategoryNameAttributeValue)
+	dp.Attributes().PutStr("discord-metrics.channel.id", discordMetricsChannelIDAttributeValue)
+	dp.Attributes().PutStr("discord-metrics.channel.name", discordMetricsChannelNameAttributeValue)
+	dp.Attributes().PutStr("discord-metrics.actor.id", discordMetricsActorIDAttributeValue)
+	dp.Attributes().PutStr("discord-metrics.actor.name", discordMetricsActorNameAttributeValue)
+}
+
+// updateCapacity saves max length of data point slices that will be used for the slice capacity.
+func (m *metricDiscordMetricsVcDuration) updateCapacity() {
+	if m.data.Sum().DataPoints().Len() > m.capacity {
+		m.capacity = m.data.Sum().DataPoints().Len()
+	}
+}
+
+// emit appends recorded metric data to a metrics slice and prepares it for recording another set of data points.
+func (m *metricDiscordMetricsVcDuration) emit(metrics pmetric.MetricSlice) {
+	if m.config.Enabled && m.data.Sum().DataPoints().Len() > 0 {
+		m.updateCapacity()
+		m.data.MoveTo(metrics.AppendEmpty())
+		m.init()
+	}
+}
+
+func newMetricDiscordMetricsVcDuration(cfg MetricConfig) metricDiscordMetricsVcDuration {
+	m := metricDiscordMetricsVcDuration{config: cfg}
 	if cfg.Enabled {
 		m.data = pmetric.NewMetric()
 		m.init()
@@ -178,14 +357,17 @@ func newMetricDiscordMessagesCount(cfg MetricConfig) metricDiscordMessagesCount 
 // MetricsBuilder provides an interface for scrapers to report metrics while taking care of all the transformations
 // required to produce metric representation defined in metadata and user config.
 type MetricsBuilder struct {
-	config                     MetricsBuilderConfig // config of the metrics builder.
-	startTime                  pcommon.Timestamp    // start time that will be applied to all recorded data points.
-	metricsCapacity            int                  // maximum observed number of metrics per resource.
-	metricsBuffer              pmetric.Metrics      // accumulates metrics data before emitting.
-	buildInfo                  component.BuildInfo  // contains version information.
-	metricDiscordJoinCount     metricDiscordJoinCount
-	metricDiscordLeaveCount    metricDiscordLeaveCount
-	metricDiscordMessagesCount metricDiscordMessagesCount
+	config                              MetricsBuilderConfig // config of the metrics builder.
+	startTime                           pcommon.Timestamp    // start time that will be applied to all recorded data points.
+	metricsCapacity                     int                  // maximum observed number of metrics per resource.
+	metricsBuffer                       pmetric.Metrics      // accumulates metrics data before emitting.
+	buildInfo                           component.BuildInfo  // contains version information.
+	metricDiscordMetricsJoinCount       metricDiscordMetricsJoinCount
+	metricDiscordMetricsLeaveCount      metricDiscordMetricsLeaveCount
+	metricDiscordMetricsMessagesCount   metricDiscordMetricsMessagesCount
+	metricDiscordMetricsVcEventCount    metricDiscordMetricsVcEventCount
+	metricDiscordMetricsVcActiveMembers metricDiscordMetricsVcActiveMembers
+	metricDiscordMetricsVcDuration      metricDiscordMetricsVcDuration
 }
 
 // metricBuilderOption applies changes to default metrics builder.
@@ -200,13 +382,16 @@ func WithStartTime(startTime pcommon.Timestamp) metricBuilderOption {
 
 func NewMetricsBuilder(mbc MetricsBuilderConfig, settings receiver.CreateSettings, options ...metricBuilderOption) *MetricsBuilder {
 	mb := &MetricsBuilder{
-		config:                     mbc,
-		startTime:                  pcommon.NewTimestampFromTime(time.Now()),
-		metricsBuffer:              pmetric.NewMetrics(),
-		buildInfo:                  settings.BuildInfo,
-		metricDiscordJoinCount:     newMetricDiscordJoinCount(mbc.Metrics.DiscordJoinCount),
-		metricDiscordLeaveCount:    newMetricDiscordLeaveCount(mbc.Metrics.DiscordLeaveCount),
-		metricDiscordMessagesCount: newMetricDiscordMessagesCount(mbc.Metrics.DiscordMessagesCount),
+		config:                              mbc,
+		startTime:                           pcommon.NewTimestampFromTime(time.Now()),
+		metricsBuffer:                       pmetric.NewMetrics(),
+		buildInfo:                           settings.BuildInfo,
+		metricDiscordMetricsJoinCount:       newMetricDiscordMetricsJoinCount(mbc.Metrics.DiscordMetricsJoinCount),
+		metricDiscordMetricsLeaveCount:      newMetricDiscordMetricsLeaveCount(mbc.Metrics.DiscordMetricsLeaveCount),
+		metricDiscordMetricsMessagesCount:   newMetricDiscordMetricsMessagesCount(mbc.Metrics.DiscordMetricsMessagesCount),
+		metricDiscordMetricsVcEventCount:    newMetricDiscordMetricsVcEventCount(mbc.Metrics.DiscordMetricsVcEventCount),
+		metricDiscordMetricsVcActiveMembers: newMetricDiscordMetricsVcActiveMembers(mbc.Metrics.DiscordMetricsVcActiveMembers),
+		metricDiscordMetricsVcDuration:      newMetricDiscordMetricsVcDuration(mbc.Metrics.DiscordMetricsVcDuration),
 	}
 	for _, op := range options {
 		op(mb)
@@ -263,9 +448,12 @@ func (mb *MetricsBuilder) EmitForResource(rmo ...ResourceMetricsOption) {
 	ils.Scope().SetName("otelcol")
 	ils.Scope().SetVersion(mb.buildInfo.Version)
 	ils.Metrics().EnsureCapacity(mb.metricsCapacity)
-	mb.metricDiscordJoinCount.emit(ils.Metrics())
-	mb.metricDiscordLeaveCount.emit(ils.Metrics())
-	mb.metricDiscordMessagesCount.emit(ils.Metrics())
+	mb.metricDiscordMetricsJoinCount.emit(ils.Metrics())
+	mb.metricDiscordMetricsLeaveCount.emit(ils.Metrics())
+	mb.metricDiscordMetricsMessagesCount.emit(ils.Metrics())
+	mb.metricDiscordMetricsVcEventCount.emit(ils.Metrics())
+	mb.metricDiscordMetricsVcActiveMembers.emit(ils.Metrics())
+	mb.metricDiscordMetricsVcDuration.emit(ils.Metrics())
 
 	for _, op := range rmo {
 		op(rm)
@@ -286,19 +474,34 @@ func (mb *MetricsBuilder) Emit(rmo ...ResourceMetricsOption) pmetric.Metrics {
 	return metrics
 }
 
-// RecordDiscordJoinCountDataPoint adds a data point to discord.join.count metric.
-func (mb *MetricsBuilder) RecordDiscordJoinCountDataPoint(ts pcommon.Timestamp, val int64, discordGuildIDAttributeValue string) {
-	mb.metricDiscordJoinCount.recordDataPoint(mb.startTime, ts, val, discordGuildIDAttributeValue)
+// RecordDiscordMetricsJoinCountDataPoint adds a data point to discord-metrics.join.count metric.
+func (mb *MetricsBuilder) RecordDiscordMetricsJoinCountDataPoint(ts pcommon.Timestamp, val int64, discordMetricsEnvironmentAttributeValue string, discordMetricsActorIDAttributeValue string, discordMetricsActorNameAttributeValue string) {
+	mb.metricDiscordMetricsJoinCount.recordDataPoint(mb.startTime, ts, val, discordMetricsEnvironmentAttributeValue, discordMetricsActorIDAttributeValue, discordMetricsActorNameAttributeValue)
 }
 
-// RecordDiscordLeaveCountDataPoint adds a data point to discord.leave.count metric.
-func (mb *MetricsBuilder) RecordDiscordLeaveCountDataPoint(ts pcommon.Timestamp, val int64, discordGuildIDAttributeValue string) {
-	mb.metricDiscordLeaveCount.recordDataPoint(mb.startTime, ts, val, discordGuildIDAttributeValue)
+// RecordDiscordMetricsLeaveCountDataPoint adds a data point to discord-metrics.leave.count metric.
+func (mb *MetricsBuilder) RecordDiscordMetricsLeaveCountDataPoint(ts pcommon.Timestamp, val int64, discordMetricsEnvironmentAttributeValue string, discordMetricsActorIDAttributeValue string, discordMetricsActorNameAttributeValue string) {
+	mb.metricDiscordMetricsLeaveCount.recordDataPoint(mb.startTime, ts, val, discordMetricsEnvironmentAttributeValue, discordMetricsActorIDAttributeValue, discordMetricsActorNameAttributeValue)
 }
 
-// RecordDiscordMessagesCountDataPoint adds a data point to discord.messages.count metric.
-func (mb *MetricsBuilder) RecordDiscordMessagesCountDataPoint(ts pcommon.Timestamp, val int64, discordCategoryIDAttributeValue string, discordCategoryNameAttributeValue string, discordChannelIDAttributeValue string, discordChannelNameAttributeValue string, discordMessagebyIDAttributeValue string, discordMessagebyNameAttributeValue string) {
-	mb.metricDiscordMessagesCount.recordDataPoint(mb.startTime, ts, val, discordCategoryIDAttributeValue, discordCategoryNameAttributeValue, discordChannelIDAttributeValue, discordChannelNameAttributeValue, discordMessagebyIDAttributeValue, discordMessagebyNameAttributeValue)
+// RecordDiscordMetricsMessagesCountDataPoint adds a data point to discord-metrics.messages.count metric.
+func (mb *MetricsBuilder) RecordDiscordMetricsMessagesCountDataPoint(ts pcommon.Timestamp, val int64, discordMetricsEnvironmentAttributeValue string, discordMetricsCategoryIDAttributeValue string, discordMetricsCategoryNameAttributeValue string, discordMetricsChannelIDAttributeValue string, discordMetricsChannelNameAttributeValue string, discordMetricsActorIDAttributeValue string, discordMetricsActorNameAttributeValue string) {
+	mb.metricDiscordMetricsMessagesCount.recordDataPoint(mb.startTime, ts, val, discordMetricsEnvironmentAttributeValue, discordMetricsCategoryIDAttributeValue, discordMetricsCategoryNameAttributeValue, discordMetricsChannelIDAttributeValue, discordMetricsChannelNameAttributeValue, discordMetricsActorIDAttributeValue, discordMetricsActorNameAttributeValue)
+}
+
+// RecordDiscordMetricsVcEventCountDataPoint adds a data point to discord-metrics.vc-event.count metric.
+func (mb *MetricsBuilder) RecordDiscordMetricsVcEventCountDataPoint(ts pcommon.Timestamp, val int64, discordMetricsEnvironmentAttributeValue string, discordMetricsCategoryIDAttributeValue string, discordMetricsCategoryNameAttributeValue string, discordMetricsChannelIDAttributeValue string, discordMetricsChannelNameAttributeValue string, discordMetricsActorIDAttributeValue string, discordMetricsActorNameAttributeValue string, discordMetricsVcEventAttributeValue string) {
+	mb.metricDiscordMetricsVcEventCount.recordDataPoint(mb.startTime, ts, val, discordMetricsEnvironmentAttributeValue, discordMetricsCategoryIDAttributeValue, discordMetricsCategoryNameAttributeValue, discordMetricsChannelIDAttributeValue, discordMetricsChannelNameAttributeValue, discordMetricsActorIDAttributeValue, discordMetricsActorNameAttributeValue, discordMetricsVcEventAttributeValue)
+}
+
+// RecordDiscordMetricsVcActiveMembersDataPoint adds a data point to discord_metrics.vc_active_members metric.
+func (mb *MetricsBuilder) RecordDiscordMetricsVcActiveMembersDataPoint(ts pcommon.Timestamp, val int64, discordMetricsEnvironmentAttributeValue string, discordMetricsCategoryIDAttributeValue string, discordMetricsCategoryNameAttributeValue string, discordMetricsChannelIDAttributeValue string, discordMetricsChannelNameAttributeValue string) {
+	mb.metricDiscordMetricsVcActiveMembers.recordDataPoint(mb.startTime, ts, val, discordMetricsEnvironmentAttributeValue, discordMetricsCategoryIDAttributeValue, discordMetricsCategoryNameAttributeValue, discordMetricsChannelIDAttributeValue, discordMetricsChannelNameAttributeValue)
+}
+
+// RecordDiscordMetricsVcDurationDataPoint adds a data point to discord_metrics.vc_duration metric.
+func (mb *MetricsBuilder) RecordDiscordMetricsVcDurationDataPoint(ts pcommon.Timestamp, val int64, discordMetricsEnvironmentAttributeValue string, discordMetricsCategoryIDAttributeValue string, discordMetricsCategoryNameAttributeValue string, discordMetricsChannelIDAttributeValue string, discordMetricsChannelNameAttributeValue string, discordMetricsActorIDAttributeValue string, discordMetricsActorNameAttributeValue string) {
+	mb.metricDiscordMetricsVcDuration.recordDataPoint(mb.startTime, ts, val, discordMetricsEnvironmentAttributeValue, discordMetricsCategoryIDAttributeValue, discordMetricsCategoryNameAttributeValue, discordMetricsChannelIDAttributeValue, discordMetricsChannelNameAttributeValue, discordMetricsActorIDAttributeValue, discordMetricsActorNameAttributeValue)
 }
 
 // Reset resets metrics builder to its initial state. It should be used when external metrics source is restarted,

@@ -4,6 +4,7 @@ import (
 	"log"
 	"time"
 
+	"github.com/bwmarrin/discordgo"
 	"go.opentelemetry.io/collector/pdata/pcommon"
 )
 
@@ -16,9 +17,10 @@ func (dh *discordHandler) messageCreateToMetrics(e messageCreateEvent) {
 
 	channel := ChannelMaps[e.m.ChannelID]
 	parent := ChannelMaps[channel.ParentID]
-	dh.mb.RecordDiscordMessagesCountDataPoint(
+	dh.mb.RecordDiscordMetricsMessagesCountDataPoint(
 		now,
 		1,
+		dh.config.Environment,
 		parent.ID,
 		parent.Name,
 		channel.ID,
@@ -39,7 +41,13 @@ func (dh *discordHandler) guildJoinToMetrics(e guildMemberAddEvent) {
 		return
 	}
 
-	dh.mb.RecordDiscordJoinCountDataPoint(now, 1, e.g.Member.User.GlobalName)
+	dh.mb.RecordDiscordMetricsJoinCountDataPoint(
+		now,
+		1,
+		dh.config.Environment,
+		e.g.Member.User.ID,
+		e.g.Member.User.GlobalName,
+	)
 }
 
 func (dh *discordHandler) guildLeaveToMetrics(e guildMemberRemoveEvent) {
@@ -53,5 +61,50 @@ func (dh *discordHandler) guildLeaveToMetrics(e guildMemberRemoveEvent) {
 		return
 	}
 
-	dh.mb.RecordDiscordLeaveCountDataPoint(now, 1, e.g.Member.User.GlobalName)
+	dh.mb.RecordDiscordMetricsLeaveCountDataPoint(
+		now,
+		1,
+		dh.config.Environment,
+		e.g.Member.User.ID,
+		e.g.Member.User.GlobalName,
+	)
+}
+
+func (dh *discordHandler) voiceStateEventToMetrics(e voiceStateEvent) {
+	now := pcommon.NewTimestampFromTime(time.Now())
+	if e.v.GuildID != dh.config.GuildID {
+		return
+	}
+
+	channel := ChannelMaps[e.v.ChannelID]
+	parent := ChannelMaps[channel.ParentID]
+
+	dh.mb.RecordDiscordMetricsVcEventCountDataPoint(
+		now,
+		1,
+		dh.config.Environment,
+		parent.ID,
+		parent.Name,
+		channel.ID,
+		channel.Name,
+		e.v.Member.User.ID,
+		e.v.Member.User.GlobalName,
+		string(checkVoiceChannelEvent(e.v)),
+	)
+}
+
+func checkVoiceChannelEvent(v *discordgo.VoiceStateUpdate) VoiceChannelEvent {
+	if v.BeforeUpdate == nil {
+		return VoiceChannelEventJoin
+	}
+
+	if v.VoiceState.ChannelID == "" {
+		return VoiceChannelEventLeave
+	}
+
+	if v.VoiceState.ChannelID != v.BeforeUpdate.ChannelID {
+		return VoiceChannelEventMove
+	}
+
+	return VoiceChannelEventMute
 }

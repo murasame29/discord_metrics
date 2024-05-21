@@ -26,9 +26,12 @@ func TestMetricsBuilderConfig(t *testing.T) {
 			name: "all_set",
 			want: MetricsBuilderConfig{
 				Metrics: MetricsConfig{
-					DiscordJoinCount:     MetricConfig{Enabled: true},
-					DiscordLeaveCount:    MetricConfig{Enabled: true},
-					DiscordMessagesCount: MetricConfig{Enabled: true},
+					DiscordMetricsJoinCount:       MetricConfig{Enabled: true},
+					DiscordMetricsLeaveCount:      MetricConfig{Enabled: true},
+					DiscordMetricsMessagesCount:   MetricConfig{Enabled: true},
+					DiscordMetricsVcEventCount:    MetricConfig{Enabled: true},
+					DiscordMetricsVcActiveMembers: MetricConfig{Enabled: true},
+					DiscordMetricsVcDuration:      MetricConfig{Enabled: true},
 				},
 			},
 		},
@@ -36,9 +39,12 @@ func TestMetricsBuilderConfig(t *testing.T) {
 			name: "none_set",
 			want: MetricsBuilderConfig{
 				Metrics: MetricsConfig{
-					DiscordJoinCount:     MetricConfig{Enabled: false},
-					DiscordLeaveCount:    MetricConfig{Enabled: false},
-					DiscordMessagesCount: MetricConfig{Enabled: false},
+					DiscordMetricsJoinCount:       MetricConfig{Enabled: false},
+					DiscordMetricsLeaveCount:      MetricConfig{Enabled: false},
+					DiscordMetricsMessagesCount:   MetricConfig{Enabled: false},
+					DiscordMetricsVcEventCount:    MetricConfig{Enabled: false},
+					DiscordMetricsVcActiveMembers: MetricConfig{Enabled: false},
+					DiscordMetricsVcDuration:      MetricConfig{Enabled: false},
 				},
 			},
 		},

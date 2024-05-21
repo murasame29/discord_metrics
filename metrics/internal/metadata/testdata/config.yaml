@@ -1,17 +1,29 @@
 default:
 all_set:
   metrics:
-    discord.join.count:
+    discord-metrics.join.count:
       enabled: true
-    discord.leave.count:
+    discord-metrics.leave.count:
       enabled: true
-    discord.messages.count:
+    discord-metrics.messages.count:
+      enabled: true
+    discord-metrics.vc-event.count:
+      enabled: true
+    discord_metrics.vc_active_members:
+      enabled: true
+    discord_metrics.vc_duration:
       enabled: true
 none_set:
   metrics:
-    discord.join.count:
+    discord-metrics.join.count:
       enabled: false
-    discord.leave.count:
+    discord-metrics.leave.count:
       enabled: false
-    discord.messages.count:
+    discord-metrics.messages.count:
+      enabled: false
+    discord-metrics.vc-event.count:
+      enabled: false
+    discord_metrics.vc_active_members:
+      enabled: false
+    discord_metrics.vc_duration:
       enabled: false

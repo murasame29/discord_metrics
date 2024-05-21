@@ -7,7 +7,17 @@ import (
 	"go.opentelemetry.io/collector/component"
 )
 
-var collectGuildIDs map[string]struct{}
+const (
+	EnvironmentTest    string = "test"
+	EnvironmentDevelop string = "develop"
+	EnvironmentProduct string = "product"
+)
+
+var envMap map[string]struct{} = map[string]struct{}{
+	EnvironmentTest:    {},
+	EnvironmentDevelop: {},
+	EnvironmentProduct: {},
+}
 
 type Config struct {
 	Token string `mapstructure:"token"`
@@ -27,6 +37,8 @@ type Config struct {
 	// If it is empty, the receiver collects statistics from all channels.
 	// The ServerWide setting is true, receiver ignores this setting.
 	GuildID string `mapstructure:"guildID,omitempty"`
+
+	Environment string `mapstructure:"guildID,omitempty"`
 
 	MetricsBuilderConfig metadata.MetricsBuilderConfig
 }
@@ -50,6 +62,10 @@ func (c *Config) Validate() error {
 
 	if c.GuildID == "" {
 		return errors.New("guildID cannot be empty")
+	}
+
+	if _, ok := envMap[c.Environment]; !ok {
+		c.Environment = EnvironmentTest
 	}
 
 	return nil

@@ -25,20 +25,32 @@ func (ms *MetricConfig) Unmarshal(parser *confmap.Conf) error {
 
 // MetricsConfig provides config for discord metrics.
 type MetricsConfig struct {
-	DiscordJoinCount     MetricConfig `mapstructure:"discord.join.count"`
-	DiscordLeaveCount    MetricConfig `mapstructure:"discord.leave.count"`
-	DiscordMessagesCount MetricConfig `mapstructure:"discord.messages.count"`
+	DiscordMetricsJoinCount       MetricConfig `mapstructure:"discord-metrics.join.count"`
+	DiscordMetricsLeaveCount      MetricConfig `mapstructure:"discord-metrics.leave.count"`
+	DiscordMetricsMessagesCount   MetricConfig `mapstructure:"discord-metrics.messages.count"`
+	DiscordMetricsVcEventCount    MetricConfig `mapstructure:"discord-metrics.vc-event.count"`
+	DiscordMetricsVcActiveMembers MetricConfig `mapstructure:"discord_metrics.vc_active_members"`
+	DiscordMetricsVcDuration      MetricConfig `mapstructure:"discord_metrics.vc_duration"`
 }
 
 func DefaultMetricsConfig() MetricsConfig {
 	return MetricsConfig{
-		DiscordJoinCount: MetricConfig{
+		DiscordMetricsJoinCount: MetricConfig{
 			Enabled: true,
 		},
-		DiscordLeaveCount: MetricConfig{
+		DiscordMetricsLeaveCount: MetricConfig{
 			Enabled: true,
 		},
-		DiscordMessagesCount: MetricConfig{
+		DiscordMetricsMessagesCount: MetricConfig{
+			Enabled: true,
+		},
+		DiscordMetricsVcEventCount: MetricConfig{
+			Enabled: true,
+		},
+		DiscordMetricsVcActiveMembers: MetricConfig{
+			Enabled: true,
+		},
+		DiscordMetricsVcDuration: MetricConfig{
 			Enabled: true,
 		},
 	}
