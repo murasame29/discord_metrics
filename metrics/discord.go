@@ -86,6 +86,8 @@ TICK:
 			dh.guildJoinToMetrics(e)
 		case e := <-dh.grCh:
 			dh.guildLeaveToMetrics(e)
+		case e := <-dh.vsCh:
+			dh.voiceStateEventToMetrics(e)
 		case <-ticker.C:
 			metrics := dh.mb.Emit()
 			dh.obsrecv.StartMetricsOp(ctx)
