@@ -10,42 +10,47 @@ status:
       - murasame29
 
 attributes:
-  discord-metrics.environment:
+  discord_metrics.guild.id:
+    description: "discordサーバのID"
+    type: string
+   
+
+  discord_metrics.environment:
     description: "メトリクスの環境。test, dev, prodで分けれられる"
     type: string
   
-  discord-metrics.category.id:
+  discord_metrics.category.id:
     description: "チャンネルカテゴリのID"
     type: string
 
-  discord-metrics.category.name:
+  discord_metrics.category.name:
     description: "チャンネルカテゴリの名前"
     type: string
 
-  discord-metrics.channel.id:
+  discord_metrics.channel.id:
     description: "チャンネルのID"
     type: string
 
-  discord-metrics.channel.name:
+  discord_metrics.channel.name:
     description: "チャンネルの名前"
     type: string
 
-  discord-metrics.actor.id:
+  discord_metrics.actor.id:
     description: "イベントを発生させた人のID"
     type: string
 
-  discord-metrics.actor.name:
+  discord_metrics.actor.name:
     description: "ベントを発生させた人の名前"
     type: string 
 
-  discord-metrics.vc.event:
+  discord_metrics.vc.event:
     description: "voice channelに関わるaction \n '' '' '' "
     type: string
 
 
 metrics:
 # messageCreateToMetrics
-  discord-metrics.messages.count:
+  discord_metrics.messages.count:
     description: "サーバ内で入力されたメッセージの総数"
     unit: "{messages}"
     sum:
@@ -54,15 +59,16 @@ metrics:
       value_type: int
     enabled: true
     attributes:
-      - discord-metrics.environment
-      - discord-metrics.category.id
-      - discord-metrics.category.name
-      - discord-metrics.channel.id
-      - discord-metrics.channel.name
-      - discord-metrics.actor.id
-      - discord-metrics.actor.name
+      - discord_metrics.guild.id
+      - discord_metrics.environment
+      - discord_metrics.category.id
+      - discord_metrics.category.name
+      - discord_metrics.channel.id
+      - discord_metrics.channel.name
+      - discord_metrics.actor.id
+      - discord_metrics.actor.name
 # guildJoinToMetrics
-  discord-metrics.join.count:
+  discord_metrics.join.count:
     description: "サーバに入ったユーザの数"
     unit: "{join}"
     sum:
@@ -71,11 +77,12 @@ metrics:
       value_type: int
     enabled: true
     attributes:
-      - discord-metrics.environment
-      - discord-metrics.actor.id
-      - discord-metrics.actor.name
+      - discord_metrics.guild.id
+      - discord_metrics.environment
+      - discord_metrics.actor.id
+      - discord_metrics.actor.name
 # guildLeaveToMetrics
-  discord-metrics.leave.count:
+  discord_metrics.leave.count:
     description: "サーバから出たユーザの数"
     unit: "{leave}"
     sum:
@@ -84,11 +91,12 @@ metrics:
       value_type: int
     enabled: true
     attributes:
-      - discord-metrics.environment
-      - discord-metrics.actor.id
-      - discord-metrics.actor.name
+      - discord_metrics.guild.id
+      - discord_metrics.environment
+      - discord_metrics.actor.id
+      - discord_metrics.actor.name
 # 
-  discord-metrics.vc-event.count:
+  discord_metrics.vc-event.count:
     description: "vcで行われたイベント"
     unit: "{vc-event}"
     sum:
@@ -97,14 +105,15 @@ metrics:
       value_type: int
     enabled: true
     attributes:
-      - discord-metrics.environment
-      - discord-metrics.category.id
-      - discord-metrics.category.name
-      - discord-metrics.channel.id
-      - discord-metrics.channel.name
-      - discord-metrics.actor.id
-      - discord-metrics.actor.name
-      - discord-metrics.vc.event
+      - discord_metrics.guild.id
+      - discord_metrics.environment
+      - discord_metrics.category.id
+      - discord_metrics.category.name
+      - discord_metrics.channel.id
+      - discord_metrics.channel.name
+      - discord_metrics.actor.id
+      - discord_metrics.actor.name
+      - discord_metrics.vc.event
 
   discord_metrics.vc_duration:
     description: "ユーザーごとのVC滞在時間"
@@ -115,13 +124,14 @@ metrics:
       value_type: int
     enabled: true
     attributes:
-      - discord-metrics.environment
-      - discord-metrics.category.id
-      - discord-metrics.category.name
-      - discord-metrics.channel.id
-      - discord-metrics.channel.name
-      - discord-metrics.actor.id
-      - discord-metrics.actor.name
+      - discord_metrics.guild.id
+      - discord_metrics.environment
+      - discord_metrics.category.id
+      - discord_metrics.category.name
+      - discord_metrics.channel.id
+      - discord_metrics.channel.name
+      - discord_metrics.actor.id
+      - discord_metrics.actor.name
 
   discord_metrics.vc_active_members:
     description: " VCのアクティブメンバー数"
@@ -130,8 +140,9 @@ metrics:
       value_type: int
     enabled: true
     attributes:
-      - discord-metrics.environment
-      - discord-metrics.category.id
-      - discord-metrics.category.name
-      - discord-metrics.channel.id
-      - discord-metrics.channel.name
+      - discord_metrics.guild.id
+      - discord_metrics.environment
+      - discord_metrics.category.id
+      - discord_metrics.category.name
+      - discord_metrics.channel.id
+      - discord_metrics.channel.name

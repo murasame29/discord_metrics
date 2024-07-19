@@ -12,6 +12,7 @@ import (
 	otlpexporter "go.opentelemetry.io/collector/exporter/otlpexporter"
 	prometheusexporter "github.com/open-telemetry/opentelemetry-collector-contrib/exporter/prometheusexporter"
 	debugexporter "go.opentelemetry.io/collector/exporter/debugexporter"
+	otlphttpexporter "go.opentelemetry.io/collector/exporter/otlphttpexporter"
 	batchprocessor "go.opentelemetry.io/collector/processor/batchprocessor"
 	otlpreceiver "go.opentelemetry.io/collector/receiver/otlpreceiver"
 	metrics "github.com/murasame29/discord_metrics/metrics"
@@ -39,6 +40,7 @@ func components() (otelcol.Factories, error) {
 		otlpexporter.NewFactory(),
 		prometheusexporter.NewFactory(),
 		debugexporter.NewFactory(),
+		otlphttpexporter.NewFactory(),
 	)
 	if err != nil {
 		return otelcol.Factories{}, err

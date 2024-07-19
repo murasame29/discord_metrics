@@ -1,13 +1,13 @@
 default:
 all_set:
   metrics:
-    discord-metrics.join.count:
+    discord_metrics.join.count:
       enabled: true
-    discord-metrics.leave.count:
+    discord_metrics.leave.count:
       enabled: true
-    discord-metrics.messages.count:
+    discord_metrics.messages.count:
       enabled: true
-    discord-metrics.vc-event.count:
+    discord_metrics.vc-event.count:
       enabled: true
     discord_metrics.vc_active_members:
       enabled: true
@@ -15,13 +15,13 @@ all_set:
       enabled: true
 none_set:
   metrics:
-    discord-metrics.join.count:
+    discord_metrics.join.count:
       enabled: false
-    discord-metrics.leave.count:
+    discord_metrics.leave.count:
       enabled: false
-    discord-metrics.messages.count:
+    discord_metrics.messages.count:
       enabled: false
-    discord-metrics.vc-event.count:
+    discord_metrics.vc-event.count:
       enabled: false
     discord_metrics.vc_active_members:
       enabled: false

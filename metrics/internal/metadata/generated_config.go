@@ -25,10 +25,10 @@ func (ms *MetricConfig) Unmarshal(parser *confmap.Conf) error {
 
 // MetricsConfig provides config for discord metrics.
 type MetricsConfig struct {
-	DiscordMetricsJoinCount       MetricConfig `mapstructure:"discord-metrics.join.count"`
-	DiscordMetricsLeaveCount      MetricConfig `mapstructure:"discord-metrics.leave.count"`
-	DiscordMetricsMessagesCount   MetricConfig `mapstructure:"discord-metrics.messages.count"`
-	DiscordMetricsVcEventCount    MetricConfig `mapstructure:"discord-metrics.vc-event.count"`
+	DiscordMetricsJoinCount       MetricConfig `mapstructure:"discord_metrics.join.count"`
+	DiscordMetricsLeaveCount      MetricConfig `mapstructure:"discord_metrics.leave.count"`
+	DiscordMetricsMessagesCount   MetricConfig `mapstructure:"discord_metrics.messages.count"`
+	DiscordMetricsVcEventCount    MetricConfig `mapstructure:"discord_metrics.vc-event.count"`
 	DiscordMetricsVcActiveMembers MetricConfig `mapstructure:"discord_metrics.vc_active_members"`
 	DiscordMetricsVcDuration      MetricConfig `mapstructure:"discord_metrics.vc_duration"`
 }

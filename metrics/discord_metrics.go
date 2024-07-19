@@ -20,6 +20,7 @@ func (dh *discordHandler) messageCreateToMetrics(e messageCreateEvent) {
 	dh.mb.RecordDiscordMetricsMessagesCountDataPoint(
 		now,
 		1,
+		e.m.GuildID,
 		dh.config.Environment,
 		parent.ID,
 		parent.Name,
@@ -44,6 +45,7 @@ func (dh *discordHandler) guildJoinToMetrics(e guildMemberAddEvent) {
 	dh.mb.RecordDiscordMetricsJoinCountDataPoint(
 		now,
 		1,
+		e.g.GuildID,
 		dh.config.Environment,
 		e.g.Member.User.ID,
 		e.g.Member.User.GlobalName,
@@ -64,6 +66,7 @@ func (dh *discordHandler) guildLeaveToMetrics(e guildMemberRemoveEvent) {
 	dh.mb.RecordDiscordMetricsLeaveCountDataPoint(
 		now,
 		1,
+		e.g.GuildID,
 		dh.config.Environment,
 		e.g.Member.User.ID,
 		e.g.Member.User.GlobalName,
@@ -82,6 +85,7 @@ func (dh *discordHandler) voiceStateEventToMetrics(e voiceStateEvent) {
 	dh.mb.RecordDiscordMetricsVcEventCountDataPoint(
 		now,
 		1,
+		e.v.GuildID,
 		dh.config.Environment,
 		parent.ID,
 		parent.Name,
