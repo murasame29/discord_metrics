@@ -5,17 +5,17 @@ dist:
   output_path: .
 
 receivers:
-  - gomod: go.opentelemetry.io/collector/receiver/otlpreceiver v0.100.0
+  - gomod: go.opentelemetry.io/collector/receiver/otlpreceiver v0.105.0
   - gomod: github.com/murasame29/discord_metrics/metrics v0.0.0
 
 processors:
-  - gomod: go.opentelemetry.io/collector/processor/batchprocessor v0.100.0
+  - gomod: go.opentelemetry.io/collector/processor/batchprocessor v0.105.0
 
 exporters:
-  - gomod: go.opentelemetry.io/collector/exporter/otlpexporter v0.100.0
-  - gomod: github.com/open-telemetry/opentelemetry-collector-contrib/exporter/prometheusexporter v0.100.0
-  - gomod: go.opentelemetry.io/collector/exporter/debugexporter v0.100.0
-  - gomod: go.opentelemetry.io/collector/exporter/otlphttpexporter v0.100.0
+  - gomod: go.opentelemetry.io/collector/exporter/otlpexporter v0.105.0
+  - gomod: github.com/open-telemetry/opentelemetry-collector-contrib/exporter/prometheusexporter v0.105.0
+  - gomod: go.opentelemetry.io/collector/exporter/debugexporter v0.105.0
+  - gomod: go.opentelemetry.io/collector/exporter/otlphttpexporter v0.105.0
 
 replaces:
   - github.com/murasame29/discord_metrics/metrics => ./metrics
